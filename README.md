@@ -29,6 +29,64 @@ L'outil **CTF-Container-Manager** a été conçu pour simplifier la gestion des 
 
 ---
 
+## Liste des challenges et challmakers
+
+| Nom du défi                  | Catégorie         | Auteur           |
+|------------------------------|-------------------|------------------|
+| Mot de passe en or           | Crypto            | Kenshila         |
+| HIDden in plain sight        | Forensic          | Kenshila         |
+| Learn to Maj+Suppr           | Forensic          | Kenshila (Elio)  |
+| Rusty Safe Access            | Crypto            | Sirius           |
+| L'AESprit du Labyrinthe      | Crypto            | Sirius           |
+| Lamentable Comme Générateur  | Crypto            | Sirius           |
+| Rusty Safe Access - 2        | Crypto            | Sirius           |
+| Equations littérales - 1     | Misc              | Sirius           |
+| Equations littérales - 2     | Misc              | Sirius           |
+| Equations littérales - 3     | Misc              | Sirius           |
+| Shadow Mentor - 1            | Osint             | Sirius           |
+| Shadow Mentor - 2            | Osint             | Sirius           |
+| Shadow Mentor - 3            | Osint             | Sirius           |
+| Shadow Mentor - 4            | Osint             | Sirius           |
+| Invisible code               | Reverse           | Sirius           |
+| JSingularity                 | Reverse           | Sirius           |
+| eXORcist                     | Reverse           | Sirius           |
+| JSingularity - 2             | Reverse           | Sirius           |
+| AveugleMan                   | Stegano           | Sirius           |
+| Cropped                      | Stegano           | Sirius           |
+| Légendes Anciennes           | Stegano           | Sirius           |
+| Romanascii                   | Stegano           | Sirius           |
+| tRICKy                       | Stegano           | Sirius           |
+| L'Agence des Défis           | Web               | Sirius           |
+| PDFSecure                    | Web               | Sirius           |
+| PDFSecure - 2                | Web               | Sirius           |
+| The BurgerKing crack         | Crypto            | Natounet         |
+| Certifishark                 | Forensic          | Natounet         |
+| HTTPixel                     | Forensic          | Natounet         |
+| RAMène moi le fichier        | Forensic          | Natounet         |
+| UVB-76 FM                    | Hardware          | Natounet         |
+| PYCasso                      | Reverse           | Natounet         |
+| la Team Requête - 1          | Web               | Natounet         |
+| la Team Requête - Intro      | Web               | Natounet         |
+| Milliseconds Matter          | Web               | Natounet         |
+| la Team Requête - 2          | Web               | Natounet         |
+| la Team requête - Fin        | Web               | Natounet         |
+| Network-Analysis             | Forensic          | prc.d1sc0rd      |
+| no surprises                 | Misc / Prog       | prc.d1sc0rd      |
+| Defied Quiz                  | Osint             | prc.d1sc0rd      |
+| blockParty                   | Crypto            | ptirem           |
+| Ça va basculer               | Hardware          | ptirem           |
+| analog ?                     | Hardware          | Cartoone         |
+| usb ?                        | Hardware          | Cartoone         |
+| banque grolandaise           | Pwn               | Cartoone         |
+| PFC Groville                 | Pwn               | Cartoone         |
+| ret2muflin                   | Pwn               | Cartoone         |
+| Vénère Vigenere              | Crypto            | v.regnault       |
+| c'est sous tes yeux !        | Misc              | v.regnault       |
+| Hexesar                      | Cryptanalyse      | victoria_237     |
+| EmodjiCipher                 | Crypto            | victoria_237     |
+
+
+
 
 ## Contact
 Pour toute question ou demande liée à cet événement, n'hésitez pas à nous contacter via bdepalme@gmail.com.
