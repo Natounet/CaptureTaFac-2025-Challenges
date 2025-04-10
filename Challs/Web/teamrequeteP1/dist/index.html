@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex - Explorez le monde des Pokémon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pokedex-red: #EE6B2F;
+            --pokedex-dark-red: #CC4C14;
+            --pokedex-blue: #3B5BA7;
+            --pokedex-dark-blue: #2A4380;
+            --pokedex-yellow: #FFCB05;
+            --pokedex-dark: #1E1E1E;
+            --pokedex-light: #f6f6f6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--pokedex-light);
+            color: var(--pokedex-dark);
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+
+        /* Header Pokédex */
+        .pokedex-header {
+            background-color: var(--pokedex-red);
+            padding: 20px 0;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .pokedex-header:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 15px;
+            background-color: var(--pokedex-dark);
+        }
+        
+        .pokedex-header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .pokedex-title {
+            font-size: 2.5rem;
+            color: white;
+            text-shadow: 2px 2px 0 var(--pokedex-blue), -2px 2px 0 var(--pokedex-blue), 
+                         2px -2px 0 var(--pokedex-blue), -2px -2px 0 var(--pokedex-blue);
+            font-weight: 700;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .pokedex-title:before {
+            content: "";
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            margin-right: 15px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="white" stroke="black" stroke-width="5"/><circle cx="50" cy="50" r="15" fill="white" stroke="black" stroke-width="5"/><path d="M5 50 h40 M55 50 h40" stroke="black" stroke-width="5"/></svg>');
+            background-size: contain;
+        }
+
+        /* Main content */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Barre de recherche */
+        .search-container {
+            display: flex;
+            margin: 20px auto;
+            max-width: 600px;
+            padding: 0 20px;
+        }
+        
+        #pokeid {
+            flex: 1;
+            padding: 12px 15px;
+            border-radius: 30px 0 0 30px;
+            border: 3px solid var(--pokedex-yellow);
+            border-right: none;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        #fetchPokemon {
+            background-color: var(--pokedex-blue);
+            color: white;
+            border: none;
+            border-radius: 0 30px 30px 0;
+            padding: 0 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 0 var(--pokedex-dark-blue);
+        }
+        
+        #fetchPokemon:hover {
+            background-color: #4c6cbc;
+        }
+        
+        #fetchPokemon:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 var(--pokedex-dark-blue);
+        }
+
+        /* Contrôles */
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        #fetchAllPokemons {
+            background-color: var(--pokedex-red);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 0 var(--pokedex-dark-red);
+        }
+        
+        #fetchAllPokemons:hover {
+            background-color: #ff7b3e;
+            transform: translateY(-2px);
+        }
+        
+        #fetchAllPokemons:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 var(--pokedex-dark-red);
+        }
+
+        /* Layout des sections */
+        .content-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .pokemon-list-section {
+            flex: 1;
+            min-width: 300px;
+            max-width: 400px;
+        }
+        
+        .pokemon-detail-section {
+            flex: 2;
+            min-width: 300px;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--pokedex-red);
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 3px solid var(--pokedex-yellow);
+            padding-bottom: 10px;
+            font-weight: 700;
+        }
+
+        /* Section liste des Pokémon */
+        #pokemonList {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            max-height: 600px;
+            overflow-y: auto;
+            border-radius: 10px;
+            border: 3px solid var(--pokedex-blue);
+            background-color: white;
+        }
+        
+        #pokemonList li {
+            background-color: white;
+            border-bottom: 2px solid var(--pokedex-yellow);
+            padding: 15px;
+            font-size: 1.1rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        #pokemonList li:last-child {
+            border-bottom: none;
+        }
+        
+        #pokemonList li:before {
+            content: "";
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="white" stroke="black" stroke-width="5"/><circle cx="50" cy="50" r="15" fill="white" stroke="black" stroke-width="5"/><path d="M5 50 h40 M55 50 h40" stroke="black" stroke-width="5"/></svg>');
+            background-size: contain;
+        }
+        
+        #pokemonList li:hover {
+            background-color: var(--pokedex-yellow);
+            color: var(--pokedex-blue);
+            font-weight: bold;
+            transform: scale(1.02);
+        }
+
+        /* Scrollbar personnalisée */
+        #pokemonList::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        #pokemonList::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        #pokemonList::-webkit-scrollbar-thumb {
+            background: var(--pokedex-blue);
+            border-radius: 10px;
+        }
+        
+        #pokemonList::-webkit-scrollbar-thumb:hover {
+            background: var(--pokedex-dark-blue);
+        }
+
+        /* Section détails d'un Pokémon */
+        #pokemondetail {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px 20px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid var(--pokedex-yellow);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        #pokemondetail:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background-color: var(--pokedex-red);
+            z-index: 0;
+        }
+        
+        #pokemondetail:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background-color: white;
+            border-top: 3px solid #ddd;
+            z-index: 0;
+        }
+        
+        .pokemon-container {
+            text-align: center;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+        }
+        
+        .pokemon-container img {
+            max-width: 200px;
+            height: auto;
+            margin: 0 auto 15px;
+            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
+            transition: transform 0.3s ease;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .pokemon-title {
+            font-size: 2rem;
+            color: var(--pokedex-blue);
+            margin: 10px 0;
+            text-transform: capitalize;
+            font-weight: 700;
+            text-shadow: 1px 1px 0 var(--pokedex-yellow);
+        }
+        
+        .pokemon-details {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--pokedex-dark);
+            margin-bottom: 20px;
+            white-space: pre-line;
+        }
+        
+        .pokemon-sprite {
+            max-width: 200px;
+            height: auto;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .content-container {
+                flex-direction: column;
+            }
+            
+            .pokemon-list-section, .pokemon-detail-section {
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .pokedex-title {
+                font-size: 2rem;
+            }
+            
+            .pokedex-header .container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Pokédex -->
+    <header class="pokedex-header">
+        <div class="container">
+            <h1 class="pokedex-title">Pokédex</h1>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Barre de recherche -->
+        <div class="search-container">
+            <input type="text" id="pokeid" placeholder="Rechercher un Pokémon par nom">
+            <button id="fetchPokemon">Rechercher</button>
+        </div>
+
+        <!-- Contrôles -->
+        <div class="controls">
+            <button id="fetchAllPokemons">Afficher tous les Pokémon</button>
+        </div>
+
+        <div class="content-container">
+            <!-- Section pour lister les Pokémon -->
+            <section class="pokemon-list-section">
+                <h2 class="section-title">Liste des Pokémon</h2>
+                <ul id="pokemonList"></ul>
+            </section>
+
+            <!-- Section pour afficher les détails d'un Pokémon -->
+            <section class="pokemon-detail-section">
+                <h2 class="section-title">Détails du Pokémon</h2>
+                <div id="pokemondetail">
+                    <div class="pokemon-container">
+                        <p class="pokemon-details">Sélectionnez un Pokémon pour afficher ses détails</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script type="module" src="./client.js"></script>
+</body>
+</html>

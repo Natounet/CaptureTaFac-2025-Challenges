@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Downloader</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+        }
+
+        /* Section Container */
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 60vh;
+            position: relative;
+            margin-top: 20vh;  /* 20vh of empty space above */
+            margin-bottom: 20vh; /* 20vh of empty space below */
+        }
+
+        h1 {
+            color: #2d3748;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 2rem;
+        }
+
+        input, input[type="file"] {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input:focus, input[type="file"]:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: none;
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Success message styles */
+        .message.success {
+            background-color: #38a169;
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            display: none;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Error message styles */
+        .message.error {
+            background-color: #e53e3e;
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            display: none;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Explanation section styles */
+        .explanation {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 700px;
+            margin-top: 20vh;
+            text-align: left;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 3rem;
+        }
+
+        .explanation h2 {
+            color: #2d3748;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .explanation p {
+            font-size: 1rem;
+            color: #4a5568;
+            margin-bottom: 1.5rem;
+        }
+
+        .explanation ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+
+        .explanation ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📁 PDF Secure</h1>
+        <div class="input-group">
+            <input type="text" id="dataInput" placeholder="Entrez votre filigranne..." required>
+        </div>
+        <div class="input-group">
+            <input type="file" id="pdfInput" accept="application/pdf" required>
+        </div>
+        <button onclick="handleDownload()" id="downloadBtn">
+            <span class="btn-text">Téléchargez le fichier sécurisé</span>
+            <div class="loading"></div>
+        </button>
+
+        <!-- Success and error messages -->
+        <div class="message success" id="successMessage">Le fichier filigranné avec succès !</div>
+        <div class="message error" id="errorMessage">Une erreur est survenue, veuillez réessayer.</div>
+    </div>
+
+    <!-- Explanation section -->
+    <div class="explanation">
+        <h2>Comment utiliser ce site ?</h2>
+        <p>Ce site permet d'ajouter un filigrane à vos fichiers PDF. Suivez les étapes ci-dessous pour sécuriser votre document :</p>
+        <ul>
+            <li><strong>Étape 1 :</strong> Entrez le texte que vous souhaitez utiliser comme filigrane dans le champ prévu à cet effet.</li>
+            <li><strong>Étape 2 :</strong> Téléchargez votre fichier PDF à partir de votre appareil.</li>
+            <li><strong>Étape 3 :</strong> Cliquez sur le bouton "Téléchargez le fichier sécurisé" pour ajouter le filigrane à votre PDF.</li>
+        </ul>
+        <p><strong>Important :</strong> Une fois qu'un PDF a été filigrané, il n'est pas possible de le filigraner une deuxième fois avec le même texte. Assurez-vous que le texte du filigrane est correct avant de télécharger le fichier.</p>
+
+        <h2>Pourquoi ajouter un filigrane à vos fichiers PDF ?</h2>
+        <p>Ajouter un filigrane à un PDF permet de renforcer sa sécurité et d'en garantir l'intégrité. Voici quelques avantages :</p>
+        <ul>
+            <li><strong>Protection contre le vol :</strong> Un filigrane visible sur chaque page rend le document reconnaissable et difficile à copier ou à falsifier.</li>
+            <li><strong>Authentification :</strong> Il permet de prouver la provenance du document, en particulier pour des documents sensibles ou confidentiels.</li>
+            <li><strong>Prévention contre l'usage abusif :</strong> En marquant un document, il est possible de dissuader sa diffusion non autorisée.</li>
+        </ul>
+        <p>En résumé, un filigrane est un moyen simple et efficace de protéger vos fichiers PDF et d'en garantir l'intégrité.</p>
+    </div>
+
+    <script>
+        async function handleDownload() {
+            const input = document.getElementById('dataInput');
+            const pdfInput = document.getElementById('pdfInput');
+            const btn = document.getElementById('downloadBtn');
+            const btnText = btn.querySelector('.btn-text');
+            const loading = btn.querySelector('.loading');
+
+            const file = pdfInput.files[0];
+            if (file && file.type !== 'application/pdf') {
+                showErrorMessage('Veuillez télécharger un fichier PDF.');
+                return;
+            }
+
+            btn.disabled = true;
+            btnText.textContent = 'Traitement en cours ...';
+            loading.style.display = 'block';
+            hideMessages();
+
+            const formData = new FormData();
+            formData.append('data', input.value);
+            formData.append('pdf', file);
+
+            try {
+                const response = await fetch('/data', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = 'watermarked_pdf.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+
+                    showSuccessMessage();
+                } else {
+                    // Handle error message when response status is not ok
+                    const errorData = await response.json();
+                    showErrorMessage(errorData.error || 'Échec du traitement du fichier.');
+                }
+            } catch (error) {
+                console.error(error);
+                showErrorMessage('Une erreur est survenue, veuillez réessayer plus tard.');
+            } finally {
+                btn.disabled = false;
+                btnText.textContent = 'Téléchargez le fichier sécurisé';
+                loading.style.display = 'none';
+            }
+        }
+
+        function showSuccessMessage() {
+            document.getElementById('successMessage').style.display = 'block';
+            setTimeout(() => document.getElementById('successMessage').style.display = 'none', 5000);
+        }
+
+        function showErrorMessage(message) {
+            const errorMessageDiv = document.getElementById('errorMessage');
+            errorMessageDiv.textContent = message;
+            errorMessageDiv.style.display = 'block';
+            setTimeout(() => errorMessageDiv.style.display = 'none', 5000);
+        }
+
+        function hideMessages() {
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

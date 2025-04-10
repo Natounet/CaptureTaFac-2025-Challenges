@@ -1,0 +1,13 @@
+{
+  "dependencies": {},
+  "devDependencies": {
+    "@types/bun": "^1.2.5"
+  },
+  "name": "teamrequetefin",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

@@ -1,0 +1,94 @@
+[
+  {
+    "fullname": "L'AESprit du Labyrinthe",
+    "shortname": "aesprit_labyrinthe",
+    "exposed_port": 6789
+  },
+  {
+    "fullname": "Équations littérales - 1/2/3",
+    "shortname": "equations_litterales",
+    "exposed_port": 1337
+  },
+  {
+    "fullname": "L'Agence des Défis",
+    "shortname": "agence_defis",
+    "exposed_port": 3000
+  },
+  {
+    "fullname": "PDFSecure",
+    "shortname": "pdfsecure",
+    "exposed_port": 5000
+  },
+  {
+    "fullname": "PDFSecure - 2",
+    "shortname": "pdfsecure_2",
+    "exposed_port": 5001
+  },
+  {
+    "fullname": "Milliseconds Matter",
+    "shortname": "milliseconds_matter",
+    "exposed_port": 5002
+  },
+  {
+    "fullname": "Certifishark",
+    "shortname": "certifishark",
+    "exposed_port": 10443
+  },
+  {
+    "fullname": "la Team Requête - Intro",
+    "shortname": "team_requete_intro",
+    "exposed_port": 3050
+  },
+  {
+    "fullname": "la Team Requête - 1",
+    "shortname": "team_requete_1",
+    "exposed_port": 8001
+  },
+  {
+    "fullname": "la Team Requête - 2",
+    "shortname": "team_requete_2",
+    "exposed_port": 8002
+  },
+  {
+    "fullname": "la Team Requête - Fin",
+    "shortname": "team_requete_fin",
+    "exposed_port": 3051
+  },
+  {
+    "fullname": "blockParty",
+    "shortname": "blockparty",
+    "exposed_port": 1338
+  },
+ {
+    "fullname": "Defied Quiz",
+    "shortname": "defied_quiz",
+    "exposed_port": 8081
+  },
+ {
+    "fullname": "Network Analysis",
+    "shortname": "network_analysis",
+    "exposed_port": 8080
+  },
+  {
+    "fullname": "PFC_Groville",
+    "shortname": "pfc_groville",
+    "exposed_port": 1555
+  },
+  {
+    "fullname": "banque_grolandaise",
+    "shortname": "banque_grolandaise",
+    "exposed_port": 1556
+  },
+  {
+    "fullname": "ret2muflin",
+    "shortname": "ret2muflin",
+    "exposed_port": 1557
+  },
+  {
+    "fullname": "no surprises",
+    "shortname": "no_surprises",
+    "exposed_port": 1234
+  }
+
+
+]

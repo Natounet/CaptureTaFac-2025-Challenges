@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffre-Fort Sécurisé</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #111;
+            font-family: 'Courier New', monospace;
+            color: #0f0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .vault-container {
+            position: relative;
+            width: 80vmin;
+            height: 80vmin;
+            max-width: 600px;
+            max-height: 600px;
+            background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+            border-radius: 10px;
+            box-shadow: 0 0 50px rgba(0, 255, 0, 0.1),
+                        inset 0 0 20px rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border: 8px solid #333;
+            overflow: hidden;
+        }
+
+        .vault-door {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #222, #333);
+            border-radius: 5px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 3s cubic-bezier(0.86, 0, 0.07, 1);
+            transform-origin: left;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
+            border: 8px solid #444;
+            margin: -8px;
+        }
+
+        .vault-door.open {
+            transform: perspective(1200px) rotateY(-85deg);
+        }
+
+        .door-handle {
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(145deg, #444, #222);
+            border-radius: 50%;
+            border: 5px solid #555;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+        }
+
+        .door-wheel {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(145deg, #333, #222);
+            border-radius: 50%;
+            border: 15px solid #444;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8),
+                        inset 0 0 10px rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .wheel-handle {
+            position: absolute;
+            width: 20px;
+            height: 60px;
+            background: #666;
+            border-radius: 10px;
+            top: 20px;
+            transform-origin: center 80px;
+        }
+
+        .wheel-handle:nth-child(2) {
+            transform: rotate(90deg);
+        }
+
+        .wheel-handle:nth-child(3) {
+            transform: rotate(180deg);
+        }
+
+        .wheel-handle:nth-child(4) {
+            transform: rotate(270deg);
+        }
+
+        .wheel-center {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(145deg, #555, #333);
+            border-radius: 50%;
+            border: 5px solid #666;
+        }
+
+        .keypad {
+            position: absolute;
+            bottom: 50px;
+            width: 200px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 10px;
+        }
+
+        .keypad-button {
+            background: linear-gradient(145deg, #333, #222);
+            color: #0f0;
+            border: 2px solid #444;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 18px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .keypad-button:hover {
+            background: linear-gradient(145deg, #444, #333);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+        }
+
+        .keypad-button:active {
+            transform: scale(0.95);
+        }
+
+        .display {
+            position: absolute;
+            top: 80px;
+            width: 200px;
+            background: #001500;
+            border: 2px solid #0f0;
+            border-radius: 5px;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            color: #0f0;
+            text-align: center;
+            height: 30px;
+            line-height: 30px;
+            font-size: 20px;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3),
+                        inset 0 0 5px rgba(0, 0, 0, 0.8);
+        }
+
+        .vault-interior {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            background: linear-gradient(145deg, #222, #333);
+            border-radius: 5px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .content-item {
+            background: #1a1a1a;
+            border: 1px solid #0f0;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+            width: 80%;
+            color: #0f0;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .content-item:hover {
+            background: #222;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+        }
+
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: rgba(0, 255, 0, 0.5);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+            animation: scan 2s linear infinite;
+            opacity: 0.7;
+            z-index: 5;
+        }
+
+        @keyframes scan {
+            0% {
+                top: 0;
+            }
+            100% {
+                top: 100%;
+            }
+        }
+
+        .radar {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: rgba(0, 20, 0, 0.3);
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            top: 20px;
+            right: 20px;
+            overflow: hidden;
+        }
+
+        .radar-line {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 50%;
+            height: 2px;
+            background: linear-gradient(to right, rgba(0, 255, 0, 0.8), transparent);
+            transform-origin: left;
+            animation: radar-sweep 3s linear infinite;
+        }
+
+        @keyframes radar-sweep {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .blinking-dots {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #0f0;
+            border-radius: 50%;
+            box-shadow: 0 0 5px #0f0;
+        }
+
+        .status-light {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: red;
+            top: 20px;
+            left: 20px;
+            box-shadow: 0 0 10px red;
+        }
+
+        .status-light.green {
+            background: #0f0;
+            box-shadow: 0 0 10px #0f0;
+        }
+
+        .message {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: #0f0;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .loading {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+            color: #0f0;
+            font-size: 20px;
+            display: none;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 255, 0, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #0f0;
+            animation: spin 1s linear infinite;
+            margin-right: 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 600px) {
+            .vault-container {
+                width: 90vmin;
+                height: 90vmin;
+            }
+            
+            .door-wheel {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .wheel-handle {
+                height: 45px;
+                transform-origin: center 60px;
+            }
+            
+            .keypad, .display {
+                width: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="vault-container">
+        <div class="scan-line"></div>
+        
+        <div class="vault-interior" id="vault-content">
+            <div class="radar">
+                <div class="radar-line"></div>
+                <div class="blinking-dots" style="top: 30%; left: 70%;"></div>
+                <div class="blinking-dots" style="top: 60%; left: 40%;"></div>
+                <div class="blinking-dots" style="top: 20%; left: 30%;"></div>
+            </div>
+            
+            <!-- Le contenu sera chargé dynamiquement depuis l'API -->
+        </div>
+        
+        <div class="vault-door">
+            <div class="status-light"></div>
+            <div class="door-handle"></div>
+            <div class="display">VERROUILLÉ</div>
+            
+            <div class="door-wheel">
+                <div class="wheel-handle"></div>
+                <div class="wheel-handle"></div>
+                <div class="wheel-handle"></div>
+                <div class="wheel-handle"></div>
+                <div class="wheel-center"></div>
+            </div>
+            
+            <div class="keypad">
+                <div class="keypad-button" data-key="1">1</div>
+                <div class="keypad-button" data-key="2">2</div>
+                <div class="keypad-button" data-key="3">3</div>
+                <div class="keypad-button" data-key="4">4</div>
+                <div class="keypad-button" data-key="5">5</div>
+                <div class="keypad-button" data-key="6">6</div>
+                <div class="keypad-button" data-key="7">7</div>
+                <div class="keypad-button" data-key="8">8</div>
+                <div class="keypad-button" data-key="9">9</div>
+                <div class="keypad-button" data-key="C">C</div>
+                <div class="keypad-button" data-key="0">0</div>
+                <div class="keypad-button" data-key="E">E</div>
+            </div>
+            
+            <div class="message">Entrez le code à 16 chiffres pour déverrouiller</div>
+        </div>
+        
+        <div class="loading">
+            <div class="spinner"></div>
+            <span>Vérification en cours...</span>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const doorWheel = document.querySelector('.door-wheel');
+            const vaultDoor = document.querySelector('.vault-door');
+            const keypadButtons = document.querySelectorAll('.keypad-button');
+            const display = document.querySelector('.display');
+            const statusLight = document.querySelector('.status-light');
+            const loadingScreen = document.querySelector('.loading');
+            const vaultContent = document.getElementById('vault-content');
+            
+            let currentCode = '';
+            let lastValidCode = '';
+            
+            // Créer des points clignotants aléatoires pour le radar
+            const radar = document.querySelector('.radar');
+            for (let i = 0; i < 5; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('blinking-dots');
+                dot.style.top = Math.random() * 100 + '%';
+                dot.style.left = Math.random() * 100 + '%';
+                dot.style.animationDelay = Math.random() * 2 + 's';
+                radar.appendChild(dot);
+            }
+            
+            // Effet de rotation de la roue
+            doorWheel.addEventListener('click', function() {
+                doorWheel.style.transition = 'transform 2s cubic-bezier(0.68, -0.55, 0.27, 1.55)';
+                doorWheel.style.transform = 'rotate(' + (Math.floor(Math.random() * 3) + 1) * 360 + 'deg)';
+                
+                // Son de rotation
+                playSound('wheel');
+                
+                setTimeout(() => {
+                    doorWheel.style.transition = 'none';
+                    doorWheel.style.transform = 'rotate(0deg)';
+                }, 2000);
+            });
+            
+            // Gestion du clavier
+            keypadButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const key = this.getAttribute('data-key');
+                    
+                    // Son de touche
+                    playSound('beep');
+                    
+                    if (key === 'C') {
+                        // Effacer le code
+                        currentCode = '';
+                        display.textContent = 'VERROUILLÉ';
+                    } else if (key === 'E') {
+                        // Valider le code
+                        if (currentCode.length > 0) {
+                            verifyCode(currentCode);
+                        }
+                    } else {
+                        // Ajouter un chiffre au code
+                        if (currentCode.length < 16) {
+                            currentCode += key;
+                            display.textContent = '*'.repeat(currentCode.length);
+                        }
+                    }
+                });
+            });
+            
+            // Fonction pour vérifier le code via l'API
+            function verifyCode(code) {
+                // Afficher l'écran de chargement
+                loadingScreen.style.display = 'flex';
+                
+                // Appel à l'API pour vérifier le code
+                fetch(`/code?c=${code}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        loadingScreen.style.display = 'none';
+                        
+                        if (data.success === true) {
+                            // Code valide
+                            display.textContent = 'ACCÈS AUTORISÉ';
+                            statusLight.classList.add('green');
+                            lastValidCode = code;
+                            
+                            // Son de déverrouillage
+                            playSound('unlock');
+                            
+                            // Animation d'ouverture
+                            setTimeout(() => {
+                                vaultDoor.classList.add('open');
+                                playSound('door');
+                                
+                                // Charger le contenu du coffre
+                                loadVaultContent(code);
+                            }, 1000);
+                        } else {
+                            // Code invalide
+                            display.textContent = 'ERREUR';
+                            
+                            // Son d'erreur
+                            playSound('error');
+                            
+                            // Animation d'erreur
+                            vaultDoor.style.animation = 'shake 0.5s';
+                            setTimeout(() => {
+                                vaultDoor.style.animation = '';
+                                display.textContent = 'VERROUILLÉ';
+                                currentCode = '';
+                            }, 1000);
+                        }
+                    })
+                    .catch(error => {
+                        loadingScreen.style.display = 'none';
+                        console.error('Erreur lors de la vérification du code:', error);
+                        
+                        // Afficher un message d'erreur
+                        display.textContent = 'ERREUR SYSTÈME';
+                        setTimeout(() => {
+                            display.textContent = 'VERROUILLÉ';
+                            currentCode = '';
+                        }, 2000);
+                    });
+            }
+            
+            // Fonction pour charger le contenu du coffre via l'API
+            function loadVaultContent(code) {
+                // Vider le contenu actuel sauf le radar
+                const radar = document.querySelector('.radar');
+                vaultContent.innerHTML = '';
+                vaultContent.appendChild(radar);
+                
+                // Afficher un indicateur de chargement dans le coffre
+                const loadingIndicator = document.createElement('div');
+                loadingIndicator.textContent = 'Chargement du contenu...';
+                loadingIndicator.style.color = '#0f0';
+                loadingIndicator.style.margin = '20px';
+                vaultContent.appendChild(loadingIndicator);
+                
+                // Appel à l'API pour récupérer le contenu
+                fetch(`/content?c=${code}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Supprimer l'indicateur de chargement
+                        vaultContent.removeChild(loadingIndicator);
+                        
+                        // Afficher les éléments du contenu
+                                                // Vérifier si nous avons des données valides
+                                                if (data.items && Array.isArray(data.items)) {
+                            // Ajouter chaque élément au contenu du coffre
+                            data.items.forEach(item => {
+                                const contentItem = document.createElement('div');
+                                contentItem.classList.add('content-item');
+                                contentItem.textContent = item.title;
+                                
+                                // Ajouter une info-bulle avec la description
+                                contentItem.setAttribute('title', item.description);
+                                
+                                // Ajouter un événement de clic pour afficher plus de détails
+                                contentItem.addEventListener('click', function() {
+                                    alert(`${item.title}\n\n${item.description}`);
+                                });
+                                
+                                vaultContent.appendChild(contentItem);
+                            });
+                        } else if (data.error) {
+                            // Afficher un message d'erreur
+                            const errorMsg = document.createElement('div');
+                            errorMsg.textContent = `Erreur: ${data.message || 'Impossible de charger le contenu'}`;
+                            errorMsg.style.color = 'red';
+                            errorMsg.style.margin = '20px';
+                            vaultContent.appendChild(errorMsg);
+                        } else {
+                            // Aucun contenu trouvé
+                            const noContent = document.createElement('div');
+                            noContent.textContent = 'Aucun contenu trouvé dans le coffre';
+                            noContent.style.color = '#0f0';
+                            noContent.style.margin = '20px';
+                            vaultContent.appendChild(noContent);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erreur lors du chargement du contenu:', error);
+                        
+                        // Supprimer l'indicateur de chargement
+                        if (loadingIndicator.parentNode === vaultContent) {
+                            vaultContent.removeChild(loadingIndicator);
+                        }
+                        
+                        // Afficher un message d'erreur
+                        const errorMsg = document.createElement('div');
+                        errorMsg.textContent = 'Erreur de connexion au serveur';
+                        errorMsg.style.color = 'red';
+                        errorMsg.style.margin = '20px';
+                        vaultContent.appendChild(errorMsg);
+                    });
+            }
+            
+            // Fonction pour jouer des sons
+            function playSound(type) {
+                const audio = new Audio();
+                
+                switch(type) {
+                    case 'beep':
+                        audio.src = 'data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU9vT18A';
+                        audio.volume = 0.3;
+                        break;
+                    case 'error':
+                        audio.src = 'data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU9vT18A';
+                        audio.volume = 0.5;
+                        break;
+                    case 'unlock':
+                        audio.src = 'data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU9vT18A';
+                        audio.volume = 0.5;
+                        break;
+                    case 'door':
+                        audio.src = 'data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU9vT18A';
+                        audio.volume = 0.5;
+                        break;
+                    case 'wheel':
+                        audio.src = 'data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU9vT18A';
+                        audio.volume = 0.4;
+                        break;
+                }
+                
+                audio.play();
+            }
+            
+            // Animation de secousse pour la porte
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes shake {
+                    0%, 100% { transform: translateX(0); }
+                    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                    20%, 40%, 60%, 80% { transform: translateX(5px); }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>
+

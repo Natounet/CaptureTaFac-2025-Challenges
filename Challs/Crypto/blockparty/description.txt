@@ -1,0 +1,25 @@
+ Mission: Operation Block Party 
+Context
+
+You are an agent of the Bytes Team in the company EcbCypherCorp. A rumor is circulating within the company: your colleagues from the Block Team are supposedly organizing a very exclusive party.
+
+Some members of your team have started investigating and discovered an application created by the Block Team. It seems to be hiding some valuable information...
+
+If you manage to uncover its secret, you might just get an invitation to this exclusive party! 
+ Clues
+
+    A member of the Bytes Team noticed a strange permutation in the way the blocks are processed...
+    Perhaps a certain "swap" could lead you to the solution? 
+
+Objective
+
+Your mission, agent, is to:
+
+    - Analyze the application created by the Block Team.
+    - Identify the permutation or swap mechanism.
+    - Find a way to bypass the authentication.
+    - Secure your invitation to the exclusive party!
+
+ Stay sharp and trust your instincts — you’ve got this!
+ Your Mission Starts Now...
+Good luck, Agent! 

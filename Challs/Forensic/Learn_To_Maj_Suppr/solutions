@@ -1,0 +1,11 @@
+Voici la solution formelle :
+
+Pré-requis : TheSleuthKit
+
+1. Utiliser fls pour récupérer l'Entry number (39) du file supprimé dans la MFT 
+commande : fls -d disk.img
+2. Utiliser istat sur l'Entry number (39) pour obtenir les informations sur quels secteurs sont utilisés sur le disque par le fichier supprimé
+commande : istat disk.img 39 
+3. Rechercher dans les blocs affichés par la commande précédente jusqu'à trouver le flag
+commande : blkcat -h disk.img 359XX
+Le flag est dans le secteur 35916

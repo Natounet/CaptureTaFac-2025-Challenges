@@ -1,0 +1,3 @@
+# eXORciste
+
+Dans une ancienne salle d'archivage, une étrange machine binaire repose, couverte de poussière et d'anciens symboles oubliés. Ce n’est pas un simple artefact : c’est un exorcisme numérique, où chaque bit est hanté par des entités invisibles. Seul celui qui saura lire les ombres et comprendre les rituels de l'opération binaire pourra libérer le secret caché à l'intérieur. L'esprit du programme attend son exorciste, celui qui saura invoquer la clé cachée et effacer les malédictions qui verrouillent la vérité. Serez-vous celui qui brisera le sort et dévoilera ce qui est dissimulé depuis trop longtemps ?

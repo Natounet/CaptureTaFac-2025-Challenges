@@ -1,0 +1,229 @@
+options:
+  parameters:
+    author: ''
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: dsp_basics_tutorial
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: ''
+    window_size: ''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [24, 12]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: audio_samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: '44100'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [424, 8.0]
+    rotation: 0
+    state: enabled
+- name: carrier_freq
+  id: variable
+  parameters:
+    comment: ''
+    value: '4625000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [312, 16.0]
+    rotation: 0
+    state: enabled
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: carrier_freq * 3
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [200, 12]
+    rotation: 0
+    state: enabled
+- name: analog_nbfm_tx_0
+  id: analog_nbfm_tx
+  parameters:
+    affinity: ''
+    alias: ''
+    audio_rate: audio_samp_rate
+    comment: ''
+    fh: '-1.0'
+    max_dev: 5e3
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    quad_rate: audio_samp_rate*4
+    tau: 75e-6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [664, 344.0]
+    rotation: 0
+    state: enabled
+- name: analog_sig_source_x_0
+  id: analog_sig_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    amp: '1'
+    comment: ''
+    freq: carrier_freq
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    offset: '0'
+    phase: '0'
+    samp_rate: samp_rate
+    showports: 'False'
+    type: complex
+    waveform: analog.GR_COS_WAVE
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [32, 592.0]
+    rotation: 0
+    state: enabled
+- name: band_pass_filter_0
+  id: band_pass_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    beta: '6.76'
+    comment: ''
+    decim: '1'
+    gain: '1'
+    high_cutoff_freq: '5000'
+    interp: '1'
+    low_cutoff_freq: '200'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: audio_samp_rate
+    type: fir_filter_fff
+    width: '1'
+    win: window.WIN_HAMMING
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [296, 332.0]
+    rotation: 0
+    state: enabled
+- name: blocks_file_sink_0
+  id: blocks_file_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    append: 'False'
+    comment: ''
+    file: /home/ubuntu/Documents/Projets/CaptureTaFac/UVB/signal.raw
+    type: complex
+    unbuffered: 'False'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1448, 592.0]
+    rotation: 0
+    state: enabled
+- name: blocks_multiply_xx_0
+  id: blocks_multiply_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_inputs: '2'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1168, 504.0]
+    rotation: 0
+    state: enabled
+- name: blocks_wavfile_source_0
+  id: blocks_wavfile_source
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    file: /home/ubuntu/Documents/Projets/CaptureTaFac/UVB/UVB76_FM.wav
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    nchan: '1'
+    repeat: 'True'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [32, 384.0]
+    rotation: 0
+    state: enabled
+- name: low_pass_filter_0
+  id: low_pass_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    beta: '6.76'
+    comment: ''
+    cutoff_freq: '5000'
+    decim: '1'
+    gain: '1'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: audio_samp_rate*4
+    type: fir_filter_ccf
+    width: '2000'
+    win: window.WIN_HAMMING
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1024, 332.0]
+    rotation: 0
+    state: enabled
+
+connections:
+- [analog_nbfm_tx_0, '0', low_pass_filter_0, '0']
+- [analog_sig_source_x_0, '0', blocks_multiply_xx_0, '1']
+- [band_pass_filter_0, '0', analog_nbfm_tx_0, '0']
+- [blocks_multiply_xx_0, '0', blocks_file_sink_0, '0']
+- [blocks_wavfile_source_0, '0', band_pass_filter_0, '0']
+- [low_pass_filter_0, '0', blocks_multiply_xx_0, '0']
+
+metadata:
+  file_format: 1
+  grc_version: 3.10.11.0

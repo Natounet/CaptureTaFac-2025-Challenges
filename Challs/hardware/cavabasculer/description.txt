@@ -1,0 +1,9 @@
+On a trouvé un circuit un peu étrange... Il semble contenir une série de modules "HAHAHAHAHA" interconnectés, et une table de vérité partielle est disponible. Pourtant, tout n'est pas aussi simple qu'il n'y paraît.
+
+Un fichier mémoire suspect (mem) est également fourni, mais son contenu est codé d'une manière obscure. La table de vérité pourrait te donner un indice pour comprendre le fonctionnement du circuit et extraire le flag !
+
+Ton objectif est de :
+Analyser le fonctionnement du circuit à partir du fichier circuit.png.
+Comprendre la logique cachée derrière les modules "HAHAHAHAHA".
+Explorer le fichier mémoire mem pour en extraire les bonnes valeurs.
+Trouver le flag !

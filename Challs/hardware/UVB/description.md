@@ -1,0 +1,3 @@
+Vous connaissez tous UVB-76, cette énigmatique station russe surnommée "The Buzzer", qui diffuse un étrange bourdonnement continu sur la fréquence 4625 kHz depuis des décennies. Mais notre équipe de recherche électromagnétique a fait une découverte stupéfiante : en plus de ses transmissions en AM, la station émet désormais en FM !
+
+Votre mission est de démoduler ce signal inédit. La fréquence reste inchangée, et le signal audio modulé est au format 44,1 kHz. Quels secrets les Russes cherchent-ils à dissimuler ? À vous de le découvrir et d'obtenir le flag... en anglais !
